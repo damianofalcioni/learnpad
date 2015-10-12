@@ -100,6 +100,8 @@ public class PNImport {
         String sequenceFlowExcludeFromToElemList = "participant"; //Se ci sono sequence flow da/verso una pool allora non li considero
         String messageFlowExcludeFromToElemList = "participant"; //Se ci sono messaggi da/verso una pool allora non li considero in quanto per la verifica si assumerebbe che il messaggio sia inviato/ricevuto sempre perci� � come se non ci fosse; se si toglie, vanno mappati a parte un place con un token ed una transizione per ogni messaggio
         
+        String modelId = bpmnXml.getDocumentElement().getAttribute("id");
+        
         NodeList startEventNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), startQuery, XPathConstants.NODESET);
         for(int i=0;i<startEventNodeList.getLength();i++){
             String id = startEventNodeList.item(i).getAttributes().getNamedItem("id").getNodeValue();
@@ -281,7 +283,7 @@ public class PNImport {
             
         }
         
-        PetriNet pn = pnm.generatePN("PNBPMN");
+        PetriNet pn = pnm.generatePN(modelId);
         postProcessEventGateways(pn, "eventG", "message");
         postProcessInclusiveComplexGateways(pn, "inclusiveComplexG");
         pn.updateStartListCheckingFlow(); //richiamando questa funzione sistemo i bpmn fatti male che iniziano senza uno startevent necessario quando un processo inizia ad es da un intermediate event che parte da un segnale o da un altro processo

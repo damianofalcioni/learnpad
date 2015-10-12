@@ -29,16 +29,32 @@ import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.xpath.XPathConstants;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import eu.learnpad.verification.plugin.bpmn.guideline.factory.GuidelinesFactory;
 import eu.learnpad.verification.plugin.bpmn.reader.MyBPMN2ModelReader;
 import eu.learnpad.verification.plugin.interfaces.Plugin;
 import eu.learnpad.verification.plugin.utils.Utils;
+import eu.learnpad.verification.plugin.utils.XMLUtils;
 import eu.learnpad.verification.plugin.utils.Utils.LogType;
 
 
 public class BPMNUnderstandability implements Plugin {
 
+    private boolean isOMGBPMN2(String modelS){
+        try{
+            Document model = XMLUtils.getXmlDocFromString(modelS);
+            String queryRoot = "/*[namespace-uri()='http://www.omg.org/spec/BPMN/20100524/MODEL' and local-name()='definitions']";
+            Node bpmnRootNode =  (Node) XMLUtils.execXPath(model.getDocumentElement(), queryRoot, XPathConstants.NODE);
+            if(bpmnRootNode!=null)
+                return true;
+        }catch(Exception e){}
+        return false;
+    }
+    
 	@Override
 	public String[] getVerificationTypeProvided() {
 		return new String[]{"UNDERSTANDABILITY"};
@@ -51,6 +67,9 @@ public class BPMNUnderstandability implements Plugin {
 			
 			if(type.equals("UNDERSTANDABILITY")){
 				
+			    if(!isOMGBPMN2(model))
+			        return "";
+			    
 				MyBPMN2ModelReader readerBPMN = new MyBPMN2ModelReader();
 		
 				GuidelinesFactory eg = new GuidelinesFactory(readerBPMN.readStringModel(model));
