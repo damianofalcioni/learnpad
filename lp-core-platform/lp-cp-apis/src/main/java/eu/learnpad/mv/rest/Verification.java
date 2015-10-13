@@ -33,19 +33,19 @@ public interface Verification {
     @Path("/getavailableverifications")
     @Produces(MediaType.TEXT_PLAIN)
     String getAvailableVerifications();
-    
-	@GET
-	@Path("/startverification")
-	@Produces(MediaType.TEXT_PLAIN)
-	String startVerification(@QueryParam("modelsetid") String modelSetId, @QueryParam("verificationtype") String verificationType);
-	
-	@GET
-	@Path("/getverificationstatus")
-	@Produces(MediaType.TEXT_PLAIN)
-	String getVerificationStatus(@QueryParam("verificationprocessid") String verificationProcessId);
-	
-	@GET
+
+    @GET
+    @Path("/startverification")
+    @Produces(MediaType.TEXT_PLAIN)
+    String startVerification(@QueryParam("modelsetid") String modelSetId, @QueryParam("verificationtype") String verificationType);
+
+    @GET
+    @Path("/getverificationstatus")
+    @Produces(MediaType.TEXT_PLAIN)
+    String getVerificationStatus(@QueryParam("verificationprocessid") String verificationProcessId);
+
+    @GET
     @Path("/getverificationresult")
-	@Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
     String getVerificationResult(@QueryParam("verificationprocessid") String verificationProcessId);
 }
