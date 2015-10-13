@@ -310,7 +310,7 @@ public class Engine {
         return ret;
     }
     
-    
+    /*
     public static void main(String[] args) {    
         try {
             //Document t = XMLUtils.getXmlDocFromString("<test a=\"Analisi &amp; dell Istanza\"></test>");
@@ -325,11 +325,11 @@ public class Engine {
             //System.out.println(engine.verifyDeadlock(bpmnModel, false));
             //System.out.println(engine.verifyUnboundedness(bpmnModel, true));
             //System.out.println(engine.verifyObjectReachability(bpmnModel, "pTask1", false, true));
-            System.out.println(engine.verifyPathExistence(bpmnModel, "pStartEvent1", "pTask1", false, false, true));
+            System.out.println(engine.verifyPathExistence(bpmnModel, "StartEvent_1", "pTask1", false, false, true));
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+    */
 }

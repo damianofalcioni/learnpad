@@ -28,8 +28,8 @@ public class BPUtils {
     
     /*
      Ritorna tutti i places che abilitano l'oggetto BPIdObject (funzione dipendente dal mapping usato per BPMN)
-     */
-    public static String[] getPNIdsFromBPMNId(PetriNet pn, String bpIdObject){
+     
+    public static String[] getPNIdsFromBPMNId2(PetriNet pn, String bpIdObject){
         String[] pnIdObject = new String[0];
         for(PL place:pn.getPlaceList_safe()){
             if(place.description.equals(bpIdObject)){
@@ -55,13 +55,33 @@ public class BPUtils {
                 }
         return pnIdObject;
     }
+    */
+    //Ritorna tutti i places che abilitano l'oggetto BPIdObject
+    public static String[] getPNIdsFromBPMNId(PetriNet pn, String bpIdObject){
+        String[] pnIdObject = new String[0];
+        for(PL place:pn.getPlaceList_safe())
+            if(place.description.equals(bpIdObject) && place.additionalInfoList.containsKey("isEntryPoint") && place.additionalInfoList.get("isEntryPoint").equals("true")){
+                pnIdObject = new String[]{place.name};
+                break;
+            }
+
+        if(pnIdObject.length==0)
+            for(TR transition:pn.getTransitionList_safe())
+                if(transition.description.equals(bpIdObject) && transition.previousList.size()!=0  && transition.additionalInfoList.containsKey("isEntryPoint") && transition.additionalInfoList.get("isEntryPoint").equals("true")){
+                    pnIdObject = new String[transition.previousList.size()];
+                    for(int i=0;i<transition.previousList.size();i++)
+                        pnIdObject[i] = transition.previousList.get(i).name;
+                    break;
+                }
+        return pnIdObject;
+    }
     
     public static boolean existBPMNObject(PetriNet pn, String bpIdObject){
         for(PL place:pn.getPlaceList_safe())
-            if(place.description.equals(bpIdObject))
+            if(place.description.equals(bpIdObject) && place.additionalInfoList.containsKey("isEntryPoint") && place.additionalInfoList.get("isEntryPoint").equals("true"))
                 return true;
         for(TR transition:pn.getTransitionList_safe())
-            if(transition.description.equals(bpIdObject) && transition.previousList.size()!=0)
+            if(transition.description.equals(bpIdObject) && transition.previousList.size()!=0  && transition.additionalInfoList.containsKey("isEntryPoint") && transition.additionalInfoList.get("isEntryPoint").equals("true"))
                 return true;
         return false;
     }
