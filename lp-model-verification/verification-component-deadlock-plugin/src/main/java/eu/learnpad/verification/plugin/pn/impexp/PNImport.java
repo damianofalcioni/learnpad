@@ -105,9 +105,18 @@ public class PNImport {
         NodeList startEventNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), startQuery, XPathConstants.NODESET);
         for(int i=0;i<startEventNodeList.getLength();i++){
             String id = startEventNodeList.item(i).getAttributes().getNamedItem("id").getNodeValue();
-            NodeList messegesToStartNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), "//*[local-name()='messageFlow' and (@sourceRef="+XMLUtils.escapeXPathField(id)+" or @targetRef="+XMLUtils.escapeXPathField(id)+")]", XPathConstants.NODESET);
+            
+            boolean isMessageStart = false;
+            NodeList messagesToStartNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), "//*[local-name()='messageFlow' and (@targetRef="+XMLUtils.escapeXPathField(id)+")]", XPathConstants.NODESET);
+            for(int x=0;x<messagesToStartNodeList.getLength();x++){
+                String sourceId = messagesToStartNodeList.item(x).getAttributes().getNamedItem("sourceRef").getNodeValue();
+                String sourceType =  ((Node) XMLUtils.execXPath(bpmnXml.getDocumentElement(), "//*[@id="+XMLUtils.escapeXPathField(sourceId)+"]", XPathConstants.NODE)).getLocalName();
+                if(!messageFlowExcludeFromToElemList.contains(sourceType))
+                    isMessageStart = true;
+            }
+            
             String elemType = "start";
-            if(messegesToStartNodeList.getLength()>0)
+            if(isMessageStart)
                 elemType += "Msg";
             float[] xy = getBPMNElementCoordinatesXY(bpmnXml, id);
             
@@ -125,9 +134,18 @@ public class PNImport {
         NodeList endEventNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), endQuery, XPathConstants.NODESET);
         for(int i=0;i<endEventNodeList.getLength();i++){
             String id = endEventNodeList.item(i).getAttributes().getNamedItem("id").getNodeValue();
-            NodeList messegesFromEndNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), "//*[local-name()='messageFlow' and (@sourceRef="+XMLUtils.escapeXPathField(id)+" or @targetRef="+XMLUtils.escapeXPathField(id)+")]", XPathConstants.NODESET);
+            
+            boolean isMessageEnd = false;
+            NodeList messagesFromEndNodeList =  (NodeList) XMLUtils.execXPath(bpmnXml.getDocumentElement(), "//*[local-name()='messageFlow' and (@sourceRef="+XMLUtils.escapeXPathField(id)+")]", XPathConstants.NODESET);
+            for(int x=0;x<messagesFromEndNodeList.getLength();x++){
+                String targetId = messagesFromEndNodeList.item(x).getAttributes().getNamedItem("targetRef").getNodeValue();
+                String targetType =  ((Node) XMLUtils.execXPath(bpmnXml.getDocumentElement(), "//*[@id="+XMLUtils.escapeXPathField(targetId)+"]", XPathConstants.NODE)).getLocalName();
+                if(!messageFlowExcludeFromToElemList.contains(targetType))
+                    isMessageEnd = true;
+            }
+            
             String elemType = "end";
-            if(messegesFromEndNodeList.getLength()>0)
+            if(isMessageEnd)
                 elemType += "Msg";
             float[] xy = getBPMNElementCoordinatesXY(bpmnXml, id);
             GeneratedElements ge = pnm.processElement(id, elemType, id, xy[0], xy[1]);
@@ -386,9 +404,17 @@ public class PNImport {
             for(int i=0;i<startEventNodeList.getLength();i++){
                 String id = startEventNodeList.item(i).getAttributes().getNamedItem("id").getNodeValue();
                 String name = startEventNodeList.item(i).getAttributes().getNamedItem("name").getNodeValue();
-                NodeList messegesToStartNodeList =  (NodeList) XMLUtils.execXPath(bpmnModelEl, "//*[@id!='' and @class='Message Flow' and (.//@instance="+XMLUtils.escapeXPathField(name)+")]", XPathConstants.NODESET);
+                
+                boolean isMessageStart = false;
+                NodeList messagesToStartNodeList =  (NodeList) XMLUtils.execXPath(bpmnModelEl, "//*[@id!='' and @class='Message Flow' and (.//@instance="+XMLUtils.escapeXPathField(name)+")]", XPathConstants.NODESET);
+                for(int x=0;x<messagesToStartNodeList.getLength();x++){
+                    String sourceType = (String) XMLUtils.execXPath(messagesToStartNodeList.item(x), "./*[local-name()='FROM' or local-name()='from']/@class", XPathConstants.STRING);
+                    if(!messageFlowExcludeFromToElemList.contains(sourceType))
+                        isMessageStart = true;
+                }
+                
                 String elemType = "start";
-                if(messegesToStartNodeList.getLength()>0)
+                if(isMessageStart)
                     elemType += "Msg";
                 float[] xy = getAdoxxElementCoordinatesXY(adoxxXml, id);
                 GeneratedElements ge = pnm.processElement(id, elemType, id, xy[0], xy[1]);
@@ -407,9 +433,17 @@ public class PNImport {
             for(int i=0;i<endEventNodeList.getLength();i++){
                 String id = endEventNodeList.item(i).getAttributes().getNamedItem("id").getNodeValue();
                 String name = endEventNodeList.item(i).getAttributes().getNamedItem("name").getNodeValue();
+                
+                boolean isMessageEnd = false;
                 NodeList messegesFromEndNodeList =  (NodeList) XMLUtils.execXPath(bpmnModelEl, "//*[@id!='' and @class='Message Flow' and (.//@instance="+XMLUtils.escapeXPathField(name)+")]", XPathConstants.NODESET);
+                for(int x=0;x<messegesFromEndNodeList.getLength();x++){
+                    String targetType = (String) XMLUtils.execXPath(messegesFromEndNodeList.item(x), "./*[local-name()='TO' or local-name()='to']/@class", XPathConstants.STRING);
+                    if(!messageFlowExcludeFromToElemList.contains(targetType))
+                        isMessageEnd = true;
+                }
+                
                 String elemType = "end";
-                if(messegesFromEndNodeList.getLength()>0)
+                if(isMessageEnd)
                     elemType += "Msg";
                 float[] xy = getAdoxxElementCoordinatesXY(adoxxXml, id);
                 GeneratedElements ge = pnm.processElement(id, elemType, id, xy[0], xy[1]);
@@ -740,7 +774,7 @@ public class PNImport {
     /*
     public static void main(String[] args) {
         try {
-            String modelUrl = "D:\\LAVORO\\PROGETTI\\PNToolkit\\testModels\\test_adoxx_02.xml";
+            String modelUrl = "D:\\LAVORO\\PROGETTI\\PNToolkit\\testModels\\test_61.xml";
             //PetriNet[] pnList = new PetriNet[]{generateFromBPMN(XMLUtils.getXmlDocFromURI(modelUrl))};
             PetriNet[] pnList = generateFromAdoxxBPMN(XMLUtils.getXmlDocFromURI(modelUrl));
             //PetriNet[] pnList = generateFromAdoxxPetriNet(XMLUtils.getXmlDocFromURI(modelUrl));
