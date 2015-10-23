@@ -60,7 +60,7 @@ public class PNImport {
     
     /**
      * Generate a PetriNet from the provided OMG BPMN2 Standard.
-     * Supported BPMN2 elements are: startEvent, endEvent, task, userTask, serviceTask, manualTask, businessRuleTask, receiveTask, sendTask, scriptTask, choreographyTask, intermediateCatchEvent, intermediateThrowEvent, adHocSubProcess, subProcess, transaction, callActivity, choreographyTask, subChoreography, callChoreography, standardLoopCharacteristics, boundaryEvent, parallelGateway, exclusiveGateway, eventBasedGateway, inclusiveGateway, complexGateway, sequenceFlow, messageFlow, participant.
+     * Supported BPMN2 elements are: startEvent, endEvent, task, userTask, serviceTask, manualTask, businessRuleTask, receiveTask, sendTask, scriptTask, intermediateCatchEvent, intermediateThrowEvent, adHocSubProcess, subProcess, transaction, callActivity, choreographyTask, subChoreography, callChoreography, standardLoopCharacteristics, boundaryEvent, parallelGateway, exclusiveGateway, eventBasedGateway, inclusiveGateway, complexGateway, sequenceFlow, messageFlow, participant.
      * The function provide a personalized mapping for every element.
      * @param bpmnXml The BPMN2 model
      * @return The PetriNet
@@ -85,7 +85,7 @@ public class PNImport {
         String startQuery = "//*[local-name()='startEvent']";
         String endQuery = "//*[local-name()='endEvent']";
         //String endSpecialQuery = "./*[local-name()='terminateEventDefinition']|./*[local-name()='errorEventDefinition']";
-        String anyTaskQuery = "//*[local-name()='task']|//*[local-name()='userTask']|//*[local-name()='serviceTask']|//*[local-name()='manualTask']|//*[local-name()='businessRuleTask']|//*[local-name()='receiveTask']|//*[local-name()='sendTask']|//*[local-name()='scriptTask']|//*[local-name()='choreographyTask']|//*[local-name()='intermediateCatchEvent']|//*[local-name()='intermediateThrowEvent']|//*[local-name()='adHocSubProcess']|//*[local-name()='subProcess']|//*[local-name()='transaction']|//*[local-name()='callActivity']|//*[local-name()='choreographyTask']|//*[local-name()='subChoreography']|//*[local-name()='callChoreography']";
+        String anyTaskQuery = "//*[local-name()='task']|//*[local-name()='userTask']|//*[local-name()='serviceTask']|//*[local-name()='manualTask']|//*[local-name()='businessRuleTask']|//*[local-name()='receiveTask']|//*[local-name()='sendTask']|//*[local-name()='scriptTask']|//*[local-name()='intermediateCatchEvent']|//*[local-name()='intermediateThrowEvent']|//*[local-name()='adHocSubProcess']|//*[local-name()='subProcess']|//*[local-name()='transaction']|//*[local-name()='callActivity']|//*[local-name()='choreographyTask']|//*[local-name()='subChoreography']|//*[local-name()='callChoreography']";
         //String anyTaskLoopQuery = "./*[local-name()='standardLoopCharacteristics']|./*[local-name()='multiInstanceLoopCharacteristics']";
         String anyTaskLoopQuery = "./*[local-name()='standardLoopCharacteristics']";
         String boundaryTaskQuery = "//*[local-name()='boundaryEvent']";
