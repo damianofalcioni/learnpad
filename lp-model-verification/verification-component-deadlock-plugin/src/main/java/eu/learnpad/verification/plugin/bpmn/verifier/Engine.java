@@ -172,6 +172,12 @@ public class Engine {
 
     private PetriNet[] generatePN(String model) throws Exception{
         PetriNet[] pnList = new PetriNet[0];
+        /*
+        model = model.replace("<!DOCTYPE ADOXML SYSTEM \"adoxml31.dtd\">", "")
+                        .replace("<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n", "")
+                        .replace(" xmlns=\"@boc-eu.com/boc-is/adonis.model.document;1\"", "")
+                        .replace(" xsi:schemaLocation=\"@boc-eu.com/boc-is/adonis.model.document;1 adoxmlmodel.xsd\"", "");
+        */
         Document xmlModel = XMLUtils.getXmlDocFromString(model);
         
         if(PNImport.isOMGBPMN2(xmlModel))

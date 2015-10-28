@@ -73,7 +73,7 @@ public class ModelUtils {
     
     private static boolean isOMGBPMN2(byte[] modelB){
         try{
-            Document model = XMLUtils.getXmlDocFromString(new String(modelB));
+            Document model = XMLUtils.getXmlDocFromString(new String(modelB, "UTF-8"));
             String queryRoot = "/*[namespace-uri()='http://www.omg.org/spec/BPMN/20100524/MODEL' and local-name()='definitions']";
             Node bpmnRootNode =  (Node) XMLUtils.execXPath(model.getDocumentElement(), queryRoot, XPathConstants.NODE);
             if(bpmnRootNode!=null)
@@ -84,7 +84,13 @@ public class ModelUtils {
     
     private static boolean isADOXX(byte[] modelB){
         try{
-            Document model = XMLUtils.getXmlDocFromString(new String(modelB));
+            String adoxxModel = new String(modelB, "UTF-8");
+            adoxxModel = adoxxModel.replace("<!DOCTYPE ADOXML SYSTEM \"adoxml31.dtd\">", "")
+                    .replace("<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n", "")
+                    .replace(" xmlns=\"@boc-eu.com/boc-is/adonis.model.document;1\"", "")
+                    .replace(" xsi:schemaLocation=\"@boc-eu.com/boc-is/adonis.model.document;1 adoxmlmodel.xsd\"", "");
+
+            Document model = XMLUtils.getXmlDocFromString(adoxxModel);
             String queryRoot = "/*[local-name()='ADOXML' or local-name()='adoxml']";
             Node bpmnRootNode =  (Node) XMLUtils.execXPath(model.getDocumentElement(), queryRoot, XPathConstants.NODE);
             if(bpmnRootNode!=null)
@@ -95,7 +101,7 @@ public class ModelUtils {
     
     private static ArrayList<String> extractOMGBPMNModelsFromADOXX(String adoxxModel) throws Exception{
         ArrayList<String> ret = new ArrayList<String>();
-        
+                
         HashMap<String,String> adoxxModelList = extractBPMNModelsFromADOXX(adoxxModel);
         for(String adoxxModelLightId:adoxxModelList.keySet())
             ret.add(callWSConversion(adoxxModelLightId, adoxxModelList.get(adoxxModelLightId)));
@@ -104,6 +110,33 @@ public class ModelUtils {
     
     private static HashMap<String,String> extractBPMNModelsFromADOXX(String adoxxModel) throws Exception{
         HashMap<String,String> ret = new HashMap<String,String>();
+        
+        adoxxModel = adoxxModel.replace("<!DOCTYPE ADOXML SYSTEM \"adoxml31.dtd\">", "")
+                                .replace("<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n", "")
+                                .replace(" xmlns=\"@boc-eu.com/boc-is/adonis.model.document;1\"", "")
+                                .replace(" xsi:schemaLocation=\"@boc-eu.com/boc-is/adonis.model.document;1 adoxmlmodel.xsd\"", "");
+
+        if(adoxxModel.contains("ADOXML"))
+            adoxxModel = adoxxModel.replace("<ADOXML", "<adoxml").replace("</ADOXML", "</adoxml")
+                                    .replace("<MODELS", "<models").replace("</MODELS", "</models")
+                                    //APPLICATIONMODELS ?
+                                    .replace("<ATTRPROFDIR", "<attrprofdir").replace("</ATTRPROFDIR", "</attrprofdir")
+                                    .replace("<ATTRIBUTEPROFILES", "<attributeprofiles").replace("</ATTRIBUTEPROFILES", "</attributeprofiles")
+                                    .replace("<ATTRIBUTEPROFILE", "<attributeprofile").replace("</ATTRIBUTEPROFILE", "</attributeprofile")
+                                    .replace("<MODELGROUPS", "<modelgroups").replace("</MODELGROUPS", "</modelgroups")
+                                    .replace("<MODELGROUP", "<modelgroup").replace("</MODELGROUP", "</modelgroup")
+                                    .replace("<MODELREFERENCE", "<modelreference").replace("</MODELREFERENCE", "</modelreference")
+                                    .replace("<MODELATTRIBUTES", "<modelattributes").replace("</MODELATTRIBUTES", "</modelattributes")
+                                    .replace("<MODEL id=\"mod.", "<model id=\"").replace("</MODEL", "</model")
+                                    .replace("<ATTRIBUTE", "<attribute").replace("</ATTRIBUTE", "</attribute")
+                                    .replace("<RECORD", "<record").replace("</RECORD", "</record")
+                                    .replace("<INSTANCE", "<instance").replace("</INSTANCE", "</instance")
+                                    .replace("<INTERREF", "<interref").replace("</INTERREF", "</interref")
+                                    .replace("<IREF", "<iref").replace("</IREF", "</iref")
+                                    .replace("<CONNECTOR", "<connector").replace("</CONNECTOR", "</connector")
+                                    .replace("<FROM", "<from").replace("</FROM", "</from")
+                                    .replace("<TO", "<to").replace("</TO", "</to")
+                                    .replace("<ROW", "<row").replace("</ROW", "</row");
         
         Document adoxxXml = XMLUtils.getXmlDocFromString(adoxxModel);
         
@@ -124,24 +157,22 @@ public class ModelUtils {
     }
     
     private static String callWSConversion(String adoxxModelId, String adoxxModel) throws Exception{
-        
-        adoxxModel = adoxxModel.replace("<?xml version=\"1.1\" encoding=\"UTF-8\"?>\n", "");
-        adoxxModel = adoxxModel.replace(" xmlns=\"@boc-eu.com/boc-is/adonis.model.document;1\"", "");
-        adoxxModel = adoxxModel.replace(" xsi:schemaLocation=\"@boc-eu.com/boc-is/adonis.model.document;1 adoxmlmodel.xsd\"", "");
-        
+
         String envelope = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.bpmn.adows.adoxx.org/\"><soapenv:Header/><soapenv:Body><ser:transformADOXML2BPMN><inputADOxxXML><![CDATA["+adoxxModel+"]]></inputADOxxXML><modelid>"+adoxxModelId+"</modelid></ser:transformADOXML2BPMN></soapenv:Body></soapenv:Envelope>";
         HashMap<String,String> htmlHeaderList = new HashMap<String,String>();
         htmlHeaderList.put("Content-Type", "text/xml; charset=UTF-8");
         htmlHeaderList.put("SOAPAction", "urn:TransformADOXML2BPMN");
         
         byte[] data = NETUtils.sendHTTPPOST("https://www.adoxx.org/ADOxxORGBPMNExport/services/transformbpmn", envelope, htmlHeaderList, false, false);
-        
-        Document dataX = XMLUtils.getXmlDocFromString(new String(data, "UTF-8"));
+        String dataS = new String(data, "UTF-8");
+        Document dataX = XMLUtils.getXmlDocFromString(dataS);
         if(dataX.getElementsByTagName("faultstring").getLength()!=0)
             throw new Exception("Error contacting the Web Service: "+dataX.getElementsByTagName("faultstring").item(0).getTextContent());
         
         String bpmnModel = dataX.getElementsByTagName("outputBPMN").item(0).getTextContent();
-
+        if(bpmnModel.isEmpty())
+            throw new Exception("Error: the ws returned an empty bpmn for the model "+adoxxModelId + ":\n"+adoxxModel);
+        //Utils.log("BPMN MODEL:\n"+bpmnModel, LogType.INFO);
         return bpmnModel;
     }
 }
