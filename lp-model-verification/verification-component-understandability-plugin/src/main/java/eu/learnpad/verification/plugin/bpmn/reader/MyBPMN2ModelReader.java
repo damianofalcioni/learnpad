@@ -25,7 +25,11 @@ import org.eclipse.bpmn2.util.Bpmn2ResourceFactoryImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.Resource.IOWrappedException;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+
+import eu.learnpad.verification.plugin.utils.Utils;
+import eu.learnpad.verification.plugin.utils.Utils.LogType;
 
 
 public class MyBPMN2ModelReader {
@@ -43,27 +47,8 @@ public class MyBPMN2ModelReader {
 		bw.write(theBPMNString);
 		bw.close();
 
-		URI uri = URI.createFileURI(temp.getAbsolutePath());
-
-		//URI uri = URI.createURI("SampleProcess.bpmn");
-		Bpmn2ResourceFactoryImpl resFactory = new Bpmn2ResourceFactoryImpl();
-		Resource resource = resFactory.createResource(uri);
-
-		// We need this option because all object references in the file are "by ID"
-		// instead of the document reference "URI#fragment" form.
-		HashMap<Object, Object> options = new HashMap<Object, Object>();
-		options.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, true);
-
-		// Load the resource
-
-		resource.load(options);
-
-
-		// This is the root element of the XML document
-		Definitions d = getDefinitions(resource);
-
 		// return all elements contained in all Processes found
-		List<RootElement> rootElements = d.getRootElements();
+		List<RootElement> rootElements = readFileModel(temp.getAbsolutePath());
 
 		return rootElements;
 
@@ -83,11 +68,14 @@ public class MyBPMN2ModelReader {
 		HashMap<Object, Object> options = new HashMap<Object, Object>();
 		options.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, true);
 
-		// Load the resource
-
-		resource.load(options);
-
-
+		try{
+			// Load the resource
+			resource.load(options);
+		}catch(IOWrappedException e){
+			Utils.log(e.getMessage(), LogType.WARNING);
+			Utils.log("\nModel involved in the exception:\n"+theBPMNFile, LogType.WARNING);
+			//	e.printStackTrace();
+		}
 		// This is the root element of the XML document
 		Definitions d = getDefinitions(resource);
 
@@ -101,25 +89,9 @@ public class MyBPMN2ModelReader {
 
 
 	public void ReadThisModel(String theBPMNFile) throws IOException {
-		URI uri = URI.createFileURI(theBPMNFile);
-		System.out.println(uri);
-		//URI uri = URI.createURI("SampleProcess.bpmn");
-		Bpmn2ResourceFactoryImpl resFactory = new Bpmn2ResourceFactoryImpl();
-		Resource resource = resFactory.createResource(uri);
-
-		// We need this option because all object references in the file are "by ID"
-		// instead of the document reference "URI#fragment" form.
-		HashMap<Object, Object> options = new HashMap<Object, Object>();
-		options.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, true);
-
-		// Load the resource
-		resource.load(options);
-
-		// This is the root element of the XML document
-		Definitions d = getDefinitions(resource);
-
+		
 		// Print all elements contained in all Processes found
-		List<RootElement> rootElements = d.getRootElements();
+		List<RootElement> rootElements = readFileModel(theBPMNFile);
 
 		int NMessageFlows = 0;
 		int NSequenceFlows = 0;

@@ -23,6 +23,8 @@ public class GuidelinesFactoryTest {
 		genarateTestforFile("ExplicitStartEndEvents.bpmn","16");
 		genarateTestforFile("annidategateway.bpmn","20");
 		genarateTestforFile("SplitAndJoinFlows.bpmn","21");
+		genarateTestforFile("modelloTest.bpmn","21");
+		genarateTestforFile("modelloTestO.bpmn","21");
 	}
 	
 	private void genarateTestforFile(String NameFile,String id){
