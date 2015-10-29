@@ -44,7 +44,7 @@ public class Utils {
 
 	
 	public enum LogType{
-		INFO, ERROR, DEBUG;
+		INFO, ERROR, DEBUG, WARNING;;
 	}
 	public static void log(Error e){
 		StringWriter sw = new StringWriter();

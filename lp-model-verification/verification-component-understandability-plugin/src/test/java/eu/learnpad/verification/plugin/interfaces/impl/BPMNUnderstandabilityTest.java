@@ -37,6 +37,18 @@ public class BPMNUnderstandabilityTest {
 		System.out.println(result);
 		assertNotNull(result);
 	}
+	
+	@Test
+	public void testError2() {
+		InputStream is = GuidelinesFactoryTest.class.getClassLoader().getResourceAsStream("modelloTestO.bpmn");
+		assertNotNull(is);
+		BPMNUnderstandability understandability = new BPMNUnderstandability();
+		String[]  type = understandability.getVerificationTypeProvided();
+		String model= new Scanner(is).useDelimiter("\\A").next();
+		String result = understandability.performVerification(model, type[0]);
+		System.out.println(result);
+		assertNotNull(result);
+	}
 
 	@Test
 	public void mainTest() {
