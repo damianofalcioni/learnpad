@@ -73,7 +73,7 @@ public class BPMNUnderstandability implements Plugin {
 				MyBPMN2ModelReader readerBPMN = new MyBPMN2ModelReader();
 		
 				GuidelinesFactory eg = new GuidelinesFactory(readerBPMN.readStringModel(model));
-				System.out.println(eg);
+				//System.out.println(eg);
 				
 				JAXBContext jaxbContext = JAXBContext.newInstance(GuidelinesFactory.class);
 				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -83,7 +83,7 @@ public class BPMNUnderstandability implements Plugin {
 				jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 
 				StringWriter w = new StringWriter();
-				jaxbMarshaller.marshal(eg, System.out);
+				//jaxbMarshaller.marshal(eg, System.out);
 				jaxbMarshaller.marshal(eg, w);
 				
 				ret =  w.toString();

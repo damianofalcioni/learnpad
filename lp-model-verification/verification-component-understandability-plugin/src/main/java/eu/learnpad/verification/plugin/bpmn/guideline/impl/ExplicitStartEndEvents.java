@@ -30,20 +30,19 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 		for (RootElement rootElement : diagram) {
 			if (rootElement instanceof Process) {
 				Process process = (Process) rootElement;
-				System.out.format("Found a process: %s\n", process.getName());
+				//System.out.format("Found a process: %s\n", process.getName());
 				NameProcess = process.getName();
 				IDProcess = process.getId();
 				for (FlowElement fe : process.getFlowElements()) {
 					if(fe instanceof SubProcess){
 						SubProcess sub = (SubProcess) fe;
-						System.out.format("Found a SubProcess: %s\n", sub.getName());
+						//System.out.format("Found a SubProcess: %s\n", sub.getName());
 						i = this.searchSubProcess(sub, ret, i);
 					}else
 						if (fe instanceof StartEvent) {
 							Event event = (Event) fe;
 							flag = true;
-							System.out.println(fe.eClass().getName() + ": name="
-									+ fe.getName() + " ID=" + fe.getId());
+							//System.out.println(fe.eClass().getName() + ": name="+ fe.getName() + " ID=" + fe.getId());
 
 							if (event.getOutgoing().size() < 1) {
 								elementsBPMN.add(fe);
@@ -54,8 +53,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 						} else if (fe instanceof EndEvent) {
 							Event event = (Event) fe;
 							flag = true;
-							System.out.println(fe.eClass().getName() + ": name="
-									+ fe.getName() + " ID=" + fe.getId());
+							//System.out.println(fe.eClass().getName() + ": name="+ fe.getName() + " ID=" + fe.getId());
 
 							if (event.getIncoming().size() < 1) {
 								elementsBPMN.add(fe);
@@ -81,14 +79,13 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 		for ( FlowElement fe : sub.getFlowElements()) {
 			if(fe instanceof SubProcess){
 				SubProcess ssub = (SubProcess) fe;
-				System.out.format("Found a SubProcess: %s\n", ssub.getName());
+				//System.out.format("Found a SubProcess: %s\n", ssub.getName());
 				i = this.searchSubProcess(ssub, ret, i);
 			}else
 			if (fe instanceof StartEvent) {
 				Event event = (Event) fe;
 				flag = true;
-				System.out.println(fe.eClass().getName() + ": name="
-						+ fe.getName() + " ID=" + fe.getId());
+				//System.out.println(fe.eClass().getName() + ": name="+ fe.getName() + " ID=" + fe.getId());
 
 				if (event.getOutgoing().size() < 1) {
 					elementsBPMN.add(fe);
@@ -99,8 +96,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 			} else if (fe instanceof EndEvent) {
 				Event event = (Event) fe;
 				flag = true;
-				System.out.println(fe.eClass().getName() + ": name="
-						+ fe.getName() + " ID=" + fe.getId());
+				//System.out.println(fe.eClass().getName() + ": name="+ fe.getName() + " ID=" + fe.getId());
 
 				if (event.getIncoming().size() < 1) {
 					elementsBPMN.add(fe);

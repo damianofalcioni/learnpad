@@ -36,15 +36,14 @@ public class explicitGateways extends abstractGuideline {
 		for (RootElement rootElement : diagram) {
 			if (rootElement instanceof Process) {
 				Process process = (Process) rootElement;
-				System.out.format("Found a process: %s\n", process.getName());
+				//System.out.format("Found a process: %s\n", process.getName());
 				NameProcess = process.getName();
 				IDProcess = process.getId();
 				for (FlowElement fe : process.getFlowElements()) {
 					if (fe instanceof Activity) {
 
 						Activity act = (Activity) fe;
-						System.out.println(fe.eClass().getName() + ": name="
-								+ fe.getName() + " ID=" + fe.getId());
+						//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 						if (act.getOutgoing().size() > 1
 								| act.getIncoming().size() > 1) {
@@ -55,7 +54,7 @@ public class explicitGateways extends abstractGuideline {
 						}
 						if(fe instanceof SubProcess){
 							SubProcess sub = (SubProcess) fe;
-							System.out.format("Found a SubProcess: %s\n", sub.getName());
+							//System.out.format("Found a SubProcess: %s\n", sub.getName());
 							i = this.searchSubProcess(sub, ret, i);
 						}
 
@@ -63,8 +62,7 @@ public class explicitGateways extends abstractGuideline {
 
 					}  else if (fe instanceof StartEvent) {
 						Event event = (Event) fe;
-						System.out.println(fe.eClass().getName() + ": name="
-								+ fe.getName() + " ID=" + fe.getId());
+						//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 						if (event.getOutgoing().size() > 1) {
 							elementsBPMN.add(fe);
@@ -74,8 +72,7 @@ public class explicitGateways extends abstractGuideline {
 						}
 					} else if (fe instanceof EndEvent) {
 						Event event = (Event) fe;
-						System.out.println(fe.eClass().getName() + ": name="
-								+ fe.getName() + " ID=" + fe.getId());
+						//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 						if (event.getIncoming().size() > 1) {
 							elementsBPMN.add(fe);
@@ -86,8 +83,7 @@ public class explicitGateways extends abstractGuideline {
 					}else if (fe instanceof CatchEvent
 							| fe instanceof ThrowEvent) {
 						Event event = (Event) fe;
-						System.out.println(fe.eClass().getName() + ": name="
-								+ fe.getName() + " ID=" + fe.getId());
+						//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 						if (event.getOutgoing().size() > 1
 								| event.getIncoming().size() > 1) {
@@ -115,14 +111,13 @@ public class explicitGateways extends abstractGuideline {
 		for ( FlowElement fe : sub.getFlowElements()) {
 			if(fe instanceof SubProcess){
 				SubProcess ssub = (SubProcess) fe;
-				System.out.format("Found a SubProcess: %s\n", ssub.getName());
+				//System.out.format("Found a SubProcess: %s\n", ssub.getName());
 				i = this.searchSubProcess(ssub, ret, i);
 			}else
 			if (fe instanceof Activity) {
 
 				Activity act = (Activity) fe;
-				System.out.println(fe.eClass().getName() + ": name="
-						+ fe.getName() + " ID=" + fe.getId());
+				//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 				if (act.getOutgoing().size() > 1
 						| act.getIncoming().size() > 1) {
@@ -133,8 +128,7 @@ public class explicitGateways extends abstractGuideline {
 				}
 			}  else if (fe instanceof StartEvent) {
 				Event event = (Event) fe;
-				System.out.println(fe.eClass().getName() + ": name="
-						+ fe.getName() + " ID=" + fe.getId());
+				//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 				if (event.getOutgoing().size() > 1) {
 					elementsBPMN.add(fe);
@@ -144,8 +138,7 @@ public class explicitGateways extends abstractGuideline {
 				}
 			} else if (fe instanceof EndEvent) {
 				Event event = (Event) fe;
-				System.out.println(fe.eClass().getName() + ": name="
-						+ fe.getName() + " ID=" + fe.getId());
+				//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 				if (event.getIncoming().size() > 1) {
 					elementsBPMN.add(fe);
@@ -156,8 +149,7 @@ public class explicitGateways extends abstractGuideline {
 			}else if (fe instanceof CatchEvent
 					| fe instanceof ThrowEvent) {
 				Event event = (Event) fe;
-				System.out.println(fe.eClass().getName() + ": name="
-						+ fe.getName() + " ID=" + fe.getId());
+				//System.out.println(fe.eClass().getName() + ": name=" + fe.getName() + " ID=" + fe.getId());
 
 				if (event.getOutgoing().size() > 1
 						| event.getIncoming().size() > 1) {
