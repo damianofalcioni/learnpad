@@ -2,6 +2,7 @@ package eu.learnpad.verification.plugin.bpmn.guideline.impl;
 
 import java.util.List;
 
+import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.EndEvent;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.FlowElement;
@@ -13,7 +14,7 @@ import org.eclipse.bpmn2.SubProcess;
 public class ExplicitStartEndEvents extends abstractGuideline{
 
 
-	public ExplicitStartEndEvents(List<RootElement> diagram) {
+	public ExplicitStartEndEvents(Definitions diagram) {
 		super(diagram);
 		this.id = "16";
 		this.Description = "The modeler should explicitly make use of start and end events. The use of start and end events is necessary to represent the different states that begin and complete the modeled process. Processes with implicit start and end events are undesirable and could lead to misinterpretations.";
@@ -23,11 +24,11 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 	}
 
 	@Override
-	protected void findGL(List<RootElement> diagram) {
+	protected void findGL(Definitions diagram) {
 		StringBuilder ret = new StringBuilder("");
 		int i = 1;
 		boolean flag = false;
-		for (RootElement rootElement : diagram) {
+		for (RootElement rootElement : diagram.getRootElements()) {
 			if (rootElement instanceof Process) {
 				Process process = (Process) rootElement;
 				//System.out.format("Found a process: %s\n", process.getName());
@@ -46,7 +47,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 							if (event.getOutgoing().size() < 1) {
 								elementsBPMN.add(fe);
-								setElements(fe.getId());
+								setElements(NameProcess,fe.getId(),IDProcess);
 								ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 										+ "\n");
 							}
@@ -57,7 +58,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 							if (event.getIncoming().size() < 1) {
 								elementsBPMN.add(fe);
-								setElements(fe.getId());
+								setElements(NameProcess,fe.getId(),IDProcess);
 								ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 										+ "\n");
 							}
@@ -89,7 +90,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 				if (event.getOutgoing().size() < 1) {
 					elementsBPMN.add(fe);
-					setElements(fe.getId());
+					setElements(NameProcess,fe.getId(),IDProcess);
 					ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 							+ "\n");
 				}
@@ -100,7 +101,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 				if (event.getIncoming().size() < 1) {
 					elementsBPMN.add(fe);
-					setElements(fe.getId());
+					setElements(NameProcess,fe.getId(),IDProcess);
 					ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 							+ "\n");
 				}

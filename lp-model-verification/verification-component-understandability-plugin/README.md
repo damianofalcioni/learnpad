@@ -27,8 +27,8 @@ and define this MANIFEST.MF /src/main/resources/custom/MANIFEST.MF
 The output structure of the verification provided by this plugin is reported in the following:
 
 	<Result>
-			<ProcessName>Empty</ProcessName> ..name of process..
-   			<ProcessID>PROCESS_1</ProcessID> ..id of process..
+			<DefinitionName>Empty</DefinitionName> ..name of definition..
+   			<DefinitionID>PROCESS_1</DefinitionID> ..id of process..
 			<Status>Ok or not</Status> ..status of the verification..
 			<Description>Summary Description of result</Description>
 			<Guidelines>
@@ -36,7 +36,7 @@ The output structure of the verification provided by this plugin is reported in 
 					<Description>..detailed description of guideline..</Description>
 					<Suggestion>..suggestion of the specific problem..</Suggestion>
 					<Elements>..elements of the specific problem..
-						<ElementID>..bpmn object id..</ElementID>
+						<ElementID refProcessName=""  refProcessID="" >..bpmn object id..</ElementID>
 					</Elements>
 				</Guideline>
 				...
@@ -44,7 +44,7 @@ The output structure of the verification provided by this plugin is reported in 
 					<Description>..detailed description of guideline..</Description>
 					<Suggestion>..suggestion of the specific problem..</Suggestion>
 					<Elements>..elements of the specific problem..
-						<ElementID>..bpmn object id..</ElementID>
+						<ElementID  refProcessName=""  refProcessID="" >..bpmn object id..</ElementID>
 					</Elements>
 				</Guideline>	
 				...		

@@ -51,7 +51,11 @@ public class BPMNUnderstandability implements Plugin {
             Node bpmnRootNode =  (Node) XMLUtils.execXPath(model.getDocumentElement(), queryRoot, XPathConstants.NODE);
             if(bpmnRootNode!=null)
                 return true;
-        }catch(Exception e){}
+        }catch(Exception e){
+        	Utils.log(e);
+			Utils.log("\nModel involved in the exception:\n"+modelS, LogType.ERROR);
+			
+        }
         return false;
     }
     
