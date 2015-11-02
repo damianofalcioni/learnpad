@@ -2,6 +2,7 @@ package eu.learnpad.verification.plugin.bpmn.guideline.impl;
 
 import java.util.List;
 
+import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.Gateway;
@@ -10,9 +11,11 @@ import org.eclipse.bpmn2.RootElement;
 import org.eclipse.bpmn2.StartEvent;
 import org.eclipse.bpmn2.SubProcess;
 
+import eu.learnpad.verification.plugin.utils.ElementID;
+
 public class SplitAndJoinFlows extends abstractGuideline {
 
-	public SplitAndJoinFlows(List<RootElement> diagram) {
+	public SplitAndJoinFlows(Definitions diagram) {
 		super(diagram);
 		this.id = "21";
 		this.Description = "The modeler should not use gateways to join and split at the same time.";
@@ -21,14 +24,14 @@ public class SplitAndJoinFlows extends abstractGuideline {
 
 	}
 	@Override
-	protected void findGL(List<RootElement> diagram) {
+	protected void findGL(Definitions diagram) {
 		StringBuilder ret = new StringBuilder("");
 		int i = 1;
-		for (RootElement rootElement : diagram) {
+		for (RootElement rootElement : diagram.getRootElements()) {
 			if (rootElement instanceof Process) {
 				Process process = (Process) rootElement;
 				//System.out.format("Found a process: %s\n", process.getName());
-				NameProcess = process.getName();
+			
 				IDProcess = process.getId();
 				for (FlowElement fe : process.getFlowElements()) {
 					if(fe instanceof SubProcess){
@@ -44,7 +47,7 @@ public class SplitAndJoinFlows extends abstractGuideline {
 							boolean bool = ((gateway.getIncoming().size() == 1 & gateway.getOutgoing().size() > 1) | (gateway.getIncoming().size() > 1 & gateway.getOutgoing().size() == 1));
 							if (!bool) {
 								elementsBPMN.add(fe);
-								setElements(fe.getId());
+								setElements(  fe.getId(),IDProcess);
 								ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 										+ "\n");
 							}
@@ -77,7 +80,7 @@ public class SplitAndJoinFlows extends abstractGuideline {
 					boolean bool = ((gateway.getIncoming().size() == 1 & gateway.getOutgoing().size() > 1) | (gateway.getIncoming().size() > 1 & gateway.getOutgoing().size() == 1));
 					if (!bool) {
 						elementsBPMN.add(fe);
-						setElements(fe.getId());
+						setElements( fe.getId(),IDProcess);
 						ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 								+ "\n");
 					}

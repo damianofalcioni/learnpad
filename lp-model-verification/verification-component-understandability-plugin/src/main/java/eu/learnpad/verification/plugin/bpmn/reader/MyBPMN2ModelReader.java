@@ -37,7 +37,7 @@ public class MyBPMN2ModelReader {
     public MyBPMN2ModelReader(){
 
     }
-    public List<RootElement> readStringModel(String theBPMNString) throws IOException{
+    public Definitions readStringModel(String theBPMNString) throws IOException{
 
         //create a temp file
         File temp = File.createTempFile("tempfile", ".tmp"); 
@@ -47,17 +47,16 @@ public class MyBPMN2ModelReader {
         bw.write(theBPMNString);
         bw.close();
 
-        // return all elements contained in all Processes found
-        List<RootElement> rootElements = readFileModel(temp.getAbsolutePath());
+        
 
-        return rootElements;
+        return  readFileModel(temp.getAbsolutePath());
 
 
     }
-    
-    public String modelId = "";
-    
-    public List<RootElement> readFileModel(String theBPMNFile) throws IOException{
+
+
+    public Definitions readFileModel(String theBPMNFile) throws IOException{
+
 
         URI uri = URI.createFileURI(theBPMNFile);
 
@@ -80,11 +79,11 @@ public class MyBPMN2ModelReader {
         }
         // This is the root element of the XML document
         Definitions d = getDefinitions(resource);
-        modelId = d.getId();
-        // return all elements contained in all Processes found
-        List<RootElement> rootElements = d.getRootElements();
 
-        return rootElements;
+
+       
+        return d;
+
 
 
     }
@@ -93,7 +92,7 @@ public class MyBPMN2ModelReader {
     public void ReadThisModel(String theBPMNFile) throws IOException {
         
         // Print all elements contained in all Processes found
-        List<RootElement> rootElements = readFileModel(theBPMNFile);
+        List<RootElement> rootElements = readFileModel(theBPMNFile).getRootElements();
 
         int NMessageFlows = 0;
         int NSequenceFlows = 0;
@@ -202,3 +201,4 @@ public class MyBPMN2ModelReader {
         return null;
     }
 }
+

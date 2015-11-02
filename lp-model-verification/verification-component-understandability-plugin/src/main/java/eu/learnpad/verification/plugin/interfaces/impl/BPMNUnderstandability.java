@@ -51,7 +51,11 @@ public class BPMNUnderstandability implements Plugin {
             Node bpmnRootNode =  (Node) XMLUtils.execXPath(model.getDocumentElement(), queryRoot, XPathConstants.NODE);
             if(bpmnRootNode!=null)
                 return true;
-        }catch(Exception e){}
+        }catch(Exception e){
+        	Utils.log(e);
+			Utils.log("\nModel involved in the exception:\n"+modelS, LogType.ERROR);
+			
+        }
         return false;
     }
     
@@ -73,7 +77,7 @@ public class BPMNUnderstandability implements Plugin {
 				MyBPMN2ModelReader readerBPMN = new MyBPMN2ModelReader();
 		
 				GuidelinesFactory eg = new GuidelinesFactory(readerBPMN.readStringModel(model));
-				eg.setProcessID(readerBPMN.modelId);
+				
 				//System.out.println(eg);
 				
 				JAXBContext jaxbContext = JAXBContext.newInstance(GuidelinesFactory.class);
