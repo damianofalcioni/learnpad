@@ -54,7 +54,9 @@ public class MyBPMN2ModelReader {
 
 
     }
-
+    
+    public String modelId = "";
+    
     public List<RootElement> readFileModel(String theBPMNFile) throws IOException{
 
         URI uri = URI.createFileURI(theBPMNFile);
@@ -78,7 +80,7 @@ public class MyBPMN2ModelReader {
         }
         // This is the root element of the XML document
         Definitions d = getDefinitions(resource);
-
+        modelId = d.getId();
         // return all elements contained in all Processes found
         List<RootElement> rootElements = d.getRootElements();
 

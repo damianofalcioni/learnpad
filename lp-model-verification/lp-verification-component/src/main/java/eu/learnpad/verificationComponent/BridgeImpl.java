@@ -27,10 +27,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBContext;
 
+import org.w3c.dom.Document;
+
+import eu.learnpad.mv.rest.data.VerificationResults;
 import eu.learnpad.verification.VerificationComponent;
 import eu.learnpad.verification.utils.Utils;
 import eu.learnpad.verificationComponent.utils.ModelUtils;
+import eu.learnpad.verificationComponent.utils.XMLUtils;
 
 @Path("/learnpad/mv")
 public class BridgeImpl implements eu.learnpad.mv.BridgeInterface {
@@ -87,11 +92,15 @@ public class BridgeImpl implements eu.learnpad.mv.BridgeInterface {
     
     @GET
     @Path("/getverificationresult")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getVerificationResult(@QueryParam("verificationprocessid") String verificationProcessId){
-        String ret = "";
+    @Produces(MediaType.APPLICATION_XML)
+    public VerificationResults getVerificationResult(@QueryParam("verificationprocessid") String verificationProcessId){
+        VerificationResults ret = null;
         try{
-            ret = VerificationComponent.getVerificationResult(verificationProcessId);
+            String res = VerificationComponent.getVerificationResult(verificationProcessId);
+            Document resX = XMLUtils.getXmlDocFromString(res);
+            JAXBContext jaxbContext = JAXBContext.newInstance(VerificationResults.class);
+            
+            ret = (VerificationResults)jaxbContext.createUnmarshaller().unmarshal(resX);
         }catch(Exception ex){ex.printStackTrace(); Utils.log(ex);}
         return ret;
     }

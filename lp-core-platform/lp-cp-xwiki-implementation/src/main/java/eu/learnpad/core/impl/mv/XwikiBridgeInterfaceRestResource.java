@@ -21,6 +21,7 @@ package eu.learnpad.core.impl.mv;
 
 import eu.learnpad.core.rest.RestResource;
 import eu.learnpad.mv.BridgeInterface;
+import eu.learnpad.mv.rest.data.VerificationResults;
 
 /*
  * The methods inherited form the BridgeInterface in this
@@ -64,7 +65,7 @@ public class XwikiBridgeInterfaceRestResource extends RestResource implements Br
     }
 
     @Override
-    public String getVerificationResult(String verificationProcessId) {
+    public VerificationResults getVerificationResult(String verificationProcessId) {
         // TODO Auto-generated method stub
         return null;
     }

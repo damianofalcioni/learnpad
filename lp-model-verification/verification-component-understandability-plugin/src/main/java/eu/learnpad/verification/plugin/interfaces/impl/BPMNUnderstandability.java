@@ -73,6 +73,7 @@ public class BPMNUnderstandability implements Plugin {
 				MyBPMN2ModelReader readerBPMN = new MyBPMN2ModelReader();
 		
 				GuidelinesFactory eg = new GuidelinesFactory(readerBPMN.readStringModel(model));
+				eg.setProcessID(readerBPMN.modelId);
 				//System.out.println(eg);
 				
 				JAXBContext jaxbContext = JAXBContext.newInstance(GuidelinesFactory.class);
@@ -93,7 +94,7 @@ public class BPMNUnderstandability implements Plugin {
 			//ex.printStackTrace();
 			Utils.log(ex);
 			Utils.log("\nModel involved in the exception:\n"+model, LogType.ERROR);
-			ret = "<Result><Status>ERROR</Status><Description>"+ex.getMessage()+"</Description></Result>";
+			ret = "<ErrorResult><Status>ERROR</Status><Description>"+ex.getMessage()+"</Description></ErrorResult>";
 		}
 		return ret;
 	}

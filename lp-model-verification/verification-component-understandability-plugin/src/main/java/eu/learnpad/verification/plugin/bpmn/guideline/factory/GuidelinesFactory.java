@@ -27,17 +27,17 @@ import eu.learnpad.verification.plugin.bpmn.guideline.impl.explicitGateways;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-		"processName",
+		//"processName",
 		"processID",
 		"status",
 		"description",
 		"guidelines"
 })
-@XmlRootElement(name = "Result")
+@XmlRootElement(name = "UnderstandabilityResult")
 public class GuidelinesFactory {
 	
-	@XmlElement(name = "ProcessName", required = true)
-	private String processName;
+	//@XmlElement(name = "ProcessName", required = true)
+	//private String processName;
 	@XmlElement(name = "ProcessID", required = true)
 	private String processID;
 	@XmlElement(name = "Status", required = true)
@@ -77,11 +77,12 @@ public class GuidelinesFactory {
 	}
 
 	public String getProcessName() {
-		return processName;
+	    return processID;
+		//return processName;
 	}
 
 	public void setProcessName(String nameProcess) {
-		this.processName = nameProcess;
+		//this.processName = nameProcess;
 	}
 
 	public String getProcessID() {

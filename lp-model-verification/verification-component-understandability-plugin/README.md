@@ -26,13 +26,12 @@ and define this MANIFEST.MF /src/main/resources/custom/MANIFEST.MF
 
 The output structure of the verification provided by this plugin is reported in the following:
 
-	<Result>
-			<ProcessName>Empty</ProcessName> ..name of process..
+	<UnderstandabilityResult>
    			<ProcessID>PROCESS_1</ProcessID> ..id of process..
 			<Status>Ok or not</Status> ..status of the verification..
 			<Description>Summary Description of result</Description>
 			<Guidelines>
-				<Guideline id="" name=""> ..id and name of the guideline..
+				<Guideline id="" Name=""> ..id and name of the guideline..
 					<Description>..detailed description of guideline..</Description>
 					<Suggestion>..suggestion of the specific problem..</Suggestion>
 					<Elements>..elements of the specific problem..
@@ -40,7 +39,7 @@ The output structure of the verification provided by this plugin is reported in 
 					</Elements>
 				</Guideline>
 				...
-				<Guideline id="" name="">
+				<Guideline id="" Name="">
 					<Description>..detailed description of guideline..</Description>
 					<Suggestion>..suggestion of the specific problem..</Suggestion>
 					<Elements>..elements of the specific problem..
@@ -49,11 +48,11 @@ The output structure of the verification provided by this plugin is reported in 
 				</Guideline>	
 				...		
 			</Guidelines>
-	</Result>
+	</UnderstandabilityResult>
 
 In case of any error in the verification phase, the plugin output will look like in the following:
 
-	<Result>
+	<ErrorResult>
 			<Status>ERROR</Status>
 			<Description>..error message..</Description>
-	</Result>
+	</ErrorResult>
