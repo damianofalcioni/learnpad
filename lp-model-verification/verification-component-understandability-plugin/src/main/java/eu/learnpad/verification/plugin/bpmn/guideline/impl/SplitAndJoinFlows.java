@@ -31,7 +31,7 @@ public class SplitAndJoinFlows extends abstractGuideline {
 			if (rootElement instanceof Process) {
 				Process process = (Process) rootElement;
 				//System.out.format("Found a process: %s\n", process.getName());
-				NameProcess = process.getName();
+			
 				IDProcess = process.getId();
 				for (FlowElement fe : process.getFlowElements()) {
 					if(fe instanceof SubProcess){
@@ -47,7 +47,7 @@ public class SplitAndJoinFlows extends abstractGuideline {
 							boolean bool = ((gateway.getIncoming().size() == 1 & gateway.getOutgoing().size() > 1) | (gateway.getIncoming().size() > 1 & gateway.getOutgoing().size() == 1));
 							if (!bool) {
 								elementsBPMN.add(fe);
-								setElements(NameProcess,  fe.getId(),IDProcess);
+								setElements(  fe.getId(),IDProcess);
 								ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 										+ "\n");
 							}
@@ -80,7 +80,7 @@ public class SplitAndJoinFlows extends abstractGuideline {
 					boolean bool = ((gateway.getIncoming().size() == 1 & gateway.getOutgoing().size() > 1) | (gateway.getIncoming().size() > 1 & gateway.getOutgoing().size() == 1));
 					if (!bool) {
 						elementsBPMN.add(fe);
-						setElements(NameProcess, fe.getId(),IDProcess);
+						setElements( fe.getId(),IDProcess);
 						ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 								+ "\n");
 					}

@@ -26,8 +26,8 @@ and define this MANIFEST.MF https://github.com/damianofalcioni/learnpad/blob/mas
 
 The output structure of the verification provided by this plugin is reported in the following:
 
-		<Result>
-			<PNName>..petri net name..</PNName>
+		<FormalVerificationResult>
+			<ProcessID>..Model ID..</ProcessID>
 			<Status>..OK or KO..</Status>
 			<Description>..detailed description of the result..</Description>
 			<CounterExampleTrace>
@@ -49,11 +49,11 @@ The output structure of the verification provided by this plugin is reported in 
 				...
 			</CounterExampleTrace>
 			...
-		</Result>
+		</FormalVerificationResult>
 
 In case of any error in the verification phase, the plugin output will look like in the following:
 
-		<Result>
+		<ErrorResult>
 			<Status>ERROR</Status>
 			<Description>..error message..</Description>
-		</Result>
+		</ErrorResult>

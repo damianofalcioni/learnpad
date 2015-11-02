@@ -32,7 +32,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 			if (rootElement instanceof Process) {
 				Process process = (Process) rootElement;
 				//System.out.format("Found a process: %s\n", process.getName());
-				NameProcess = process.getName();
+				
 				IDProcess = process.getId();
 				for (FlowElement fe : process.getFlowElements()) {
 					if(fe instanceof SubProcess){
@@ -47,7 +47,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 							if (event.getOutgoing().size() < 1) {
 								elementsBPMN.add(fe);
-								setElements(NameProcess,fe.getId(),IDProcess);
+								setElements(fe.getId(),IDProcess);
 								ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 										+ "\n");
 							}
@@ -58,7 +58,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 							if (event.getIncoming().size() < 1) {
 								elementsBPMN.add(fe);
-								setElements(NameProcess,fe.getId(),IDProcess);
+								setElements(fe.getId(),IDProcess);
 								ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 										+ "\n");
 							}
@@ -90,7 +90,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 				if (event.getOutgoing().size() < 1) {
 					elementsBPMN.add(fe);
-					setElements(NameProcess,fe.getId(),IDProcess);
+					setElements(fe.getId(),IDProcess);
 					ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 							+ "\n");
 				}
@@ -101,7 +101,7 @@ public class ExplicitStartEndEvents extends abstractGuideline{
 
 				if (event.getIncoming().size() < 1) {
 					elementsBPMN.add(fe);
-					setElements(NameProcess,fe.getId(),IDProcess);
+					setElements(fe.getId(),IDProcess);
 					ret.append(i++ +") name=" + fe.getName() + " ID=" + fe.getId()
 							+ "\n");
 				}

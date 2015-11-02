@@ -31,17 +31,14 @@ import eu.learnpad.verification.plugin.bpmn.guideline.impl.explicitGateways;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-		"definitionName",
 		"definitionID",
 		"status",
 		"description",
 		"guidelines"
 })
-@XmlRootElement(name = "Result")
+@XmlRootElement(name = "UnderstandabilityResult")
 public class GuidelinesFactory {
 
-	@XmlElement(name = "DefinitionName", required = true)
-	private String definitionName;
 	@XmlElement(name = "DefinitionID", required = true)
 	private String definitionID;
 	@XmlElement(name = "Status", required = true)
@@ -62,12 +59,6 @@ public class GuidelinesFactory {
 	public GuidelinesFactory(Definitions graph){
 		diagram = graph;
 		guidelines = new ArrayList<abstractGuideline>();
-		if(diagram.getName()!=null){
-			setDefinitionName(diagram.getName());
-		}
-		else{
-			setDefinitionName("empty");
-		}
 		setDefinitionID(diagram.getId());
 		guidelines.add(new ExplicitStartEndEvents(diagram));
 		guidelines.add(new explicitGateways(diagram));
@@ -80,14 +71,6 @@ public class GuidelinesFactory {
 
 	public Collection<abstractGuideline> getGuidelines(){
 		return guidelines;
-	}
-
-	public String getDefinitionName() {
-		return definitionName;
-	}
-
-	public void setDefinitionName(String definitionName) {
-		this.definitionName = definitionName;
 	}
 
 	public String getDefinitionID() {

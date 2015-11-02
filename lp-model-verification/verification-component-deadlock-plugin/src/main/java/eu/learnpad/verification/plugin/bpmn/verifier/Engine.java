@@ -263,7 +263,7 @@ public class Engine {
     private String formatResult(boolean propertyVerified, ArrayList<String[]> counterExampleTraceList, PetriNet pn, String verificationDescription) throws Exception{
         /*
          <Result>
-             <PNName>..petri net name..</PNName>
+             <ProcessID>..petri net name..</ProcessID>
              <Status>..OK or KO..</Status>
              <Description>..detailed description of the result..</Description>
              <CounterExampleTrace>
@@ -290,7 +290,7 @@ public class Engine {
         
         String status = (propertyVerified)?"OK":"KO";
         String description = "The property \""+verificationDescription+"\" is "+((propertyVerified)?"TRUE!":"FALSE!");
-        String ret = "<Result><PNName>"+pn.name+"</PNName><Status>"+status+"</Status><Description>"+description+"</Description>";
+        String ret = "<FormalVerificationResult><ProcessID>"+pn.name+"</ProcessID><Status>"+status+"</Status><Description>"+description+"</Description>";
         for(String[] counterExampleTrace: counterExampleTraceList){
             ret += "<CounterExampleTrace>";
             
@@ -311,7 +311,7 @@ public class Engine {
             }
             ret += "</CounterExampleTrace>";
         }
-        ret += "</Result>";
+        ret += "</FormalVerificationResult>";
             
         return ret;
     }
