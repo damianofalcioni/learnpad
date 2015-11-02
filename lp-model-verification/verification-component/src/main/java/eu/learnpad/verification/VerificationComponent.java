@@ -141,7 +141,7 @@ public class VerificationComponent {
      * @return String The result of the verification. It is an xml in the following format:
      * <pre>
      * {@code
- <VerificationResult>
+ <VerificationResults>
    <VerificationType>...</VerificationType>
    <VerificationID>...</VerificationID>
    <ModelID>...</ModelID>
@@ -149,7 +149,7 @@ public class VerificationComponent {
    <Results>
      ...plugin output...
    </Results>
- </VerificationResult>
+ </VerificationResults>
          }
      * </pre>
      */
@@ -211,10 +211,10 @@ public class VerificationComponent {
                 result += verificationEngine.performVerification(model, verificationType);
             
             if(result=="")
-                result = "<Result><Status>ERROR</Status><Description>The "+verificationType+" verificator returned an empty response</Description></Result>";
+                result = "<ErrorResult><Status>ERROR</Status><Description>The "+verificationType+" verificator returned an empty response</Description></ErrorResult>";
             verificationEngine = null;
             verificationMap = null;
-            String resultXml = "<VerificationResult><VerificationType>"+verificationType+"</VerificationType><VerificationID>"+vid+"</VerificationID><ModelID>"+modelId+"</ModelID><Time>"+Utils.getUTCTime()+"</Time><Results>"+result+"</Results></VerificationResult>";
+            String resultXml = "<VerificationResults><VerificationType>"+verificationType+"</VerificationType><VerificationID>"+vid+"</VerificationID><ModelID>"+modelId+"</ModelID><Time>"+Utils.getUTCTime()+"</Time><Results>"+result+"</Results></VerificationResults>";
             try{
                 XMLUtils.getXmlDocFromString(resultXml);
             }catch(Exception e){ throw new Exception("ERROR: The result is not a valid XML:\n"+resultXml);}

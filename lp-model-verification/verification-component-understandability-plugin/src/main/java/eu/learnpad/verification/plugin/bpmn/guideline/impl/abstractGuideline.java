@@ -38,8 +38,7 @@ public abstract class abstractGuideline {
 
 	@XmlTransient
 	protected boolean status;
-	@XmlTransient
-	protected String NameProcess;
+
 	@XmlTransient
 	protected String IDProcess;
 
@@ -97,11 +96,11 @@ public abstract class abstractGuideline {
 
 
 
-	public void setElements(String name, String element, String refprocessid) {
+	public void setElements(String element, String refprocessid) {
 		if(Elements==null){
 			Elements = new ArrayList<ElementID>();
 		}
-		Elements.add(new ElementID(name, element, refprocessid));
+		Elements.add(new ElementID(element, refprocessid));
 	}
 
 
@@ -116,9 +115,6 @@ public abstract class abstractGuideline {
 		return Name;
 	}
 
-	public String getProcessName() {
-		return NameProcess;
-	}
 
 	public String getProcessID() {
 		return IDProcess;

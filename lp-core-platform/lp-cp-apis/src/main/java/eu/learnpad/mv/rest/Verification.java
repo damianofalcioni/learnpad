@@ -25,6 +25,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import eu.learnpad.mv.rest.data.VerificationResults;
+
 
 @Path("/learnpad/mv")
 public interface Verification {
@@ -46,6 +48,6 @@ public interface Verification {
 
     @GET
     @Path("/getverificationresult")
-    @Produces(MediaType.TEXT_PLAIN)
-    String getVerificationResult(@QueryParam("verificationprocessid") String verificationProcessId);
+    @Produces(MediaType.APPLICATION_XML)
+    VerificationResults getVerificationResult(@QueryParam("verificationprocessid") String verificationProcessId);
 }

@@ -54,7 +54,9 @@ public class MyBPMN2ModelReader {
 
     }
 
+
     public Definitions readFileModel(String theBPMNFile) throws IOException{
+
 
         URI uri = URI.createFileURI(theBPMNFile);
 
@@ -78,8 +80,10 @@ public class MyBPMN2ModelReader {
         // This is the root element of the XML document
         Definitions d = getDefinitions(resource);
 
+
        
         return d;
+
 
 
     }
