@@ -27,7 +27,7 @@ and define this MANIFEST.MF /src/main/resources/custom/MANIFEST.MF
 The output structure of the verification provided by this plugin is reported in the following:
 
 
-	<Result>			
+	<UnderstandabilityResult>			
    			<DefinitionID>PROCESS_1</DefinitionID> ..id of definition..
 			<Status>Ok or not</Status> ..status of the verification..
 			<Description>Summary Description of result</Description>
