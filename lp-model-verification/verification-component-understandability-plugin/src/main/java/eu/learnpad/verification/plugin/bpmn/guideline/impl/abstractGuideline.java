@@ -12,6 +12,8 @@ import java.util.Collection;
 
 
 
+
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -29,7 +31,7 @@ import eu.learnpad.verification.plugin.utils.ElementID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 
-public abstract class abstractGuideline {
+public  class abstractGuideline implements Runnable {
 
 	@XmlTransient
 	protected Collection<FlowElement> elementsBPMN;
@@ -39,11 +41,14 @@ public abstract class abstractGuideline {
 
 	@XmlTransient
 	protected String IDProcess;
+	
+	@XmlTransient
+	protected Definitions diagram;
 
 	@XmlAttribute(name = "id", required = true)
 	protected String id;
 	@XmlAttribute(name = "Name", required = true)
-	protected String Name;
+	protected  String Name;
 
 	@XmlElement(name = "Description", required = true)
 	protected String Description;
@@ -58,14 +63,20 @@ public abstract class abstractGuideline {
 
 	}
 
-	abstractGuideline(Definitions diagram){
-		elementsBPMN = new ArrayList<FlowElement>();
-
-		status = false;
+	public abstractGuideline(Definitions diagram){
+		this.elementsBPMN = new ArrayList<FlowElement>();
+		this.Suggestion="";
+		this.status = false;
+		this.diagram=diagram;
+	}
+	
+	public void Start() {
 		findGL(diagram);
 	}
 
-	protected abstract void findGL(Definitions diagram);
+	protected  void findGL(Definitions diagram){
+		
+	}
 
 	public boolean getStatus() {
 
@@ -94,11 +105,18 @@ public abstract class abstractGuideline {
 
 
 
-	public void setElements(String element, String refprocessid) {
+	public void setElements(String element, String refprocessid, String name) {
 		if(Elements==null){
 			Elements = new ArrayList<ElementID>();
 		}
-		Elements.add(new ElementID(element, refprocessid));
+		Elements.add(new ElementID(element, refprocessid,name));
+	}
+	
+	public void setAllElements(Collection<ElementID> Elementstemp) {
+		if(Elements==null){
+			Elements = new ArrayList<ElementID>();
+		}
+		Elements.addAll(Elementstemp);
 	}
 
 
@@ -122,6 +140,26 @@ public abstract class abstractGuideline {
 		return Suggestion;
 	}
 
-	protected abstract int searchSubProcess(SubProcess sub, StringBuilder ret, int i);
+	protected  int searchSubProcess(SubProcess sub, StringBuilder ret, int i){
+		return 0;
+	}
 
+	@Override
+	public void run() {
+		Start();
+		
+	}
+	
+	
+	public String getState(){
+		switch (Thread.currentThread().getState()) {
+		case TERMINATED:
+			return "OK";
+
+		default:
+			return "IN PROGRESS";
+		}
+
+	}
+	
 }
